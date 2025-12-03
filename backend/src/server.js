@@ -1,4 +1,3 @@
-import "dotenv/config";
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
@@ -10,10 +9,13 @@ const app = express();
 
 // Basic config
 const port = process.env.PORT || 5000;
-const MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI || "";
-const DB_NAME = process.env.DB_NAME || "CASAVOSTRA";
+const MONGO_URL = "mongodb+srv://casavostra:CASAVOSTRA2025TOUTOU@casavostra.f7qmkyf.mongodb.net/?appName=casavostra";
+const DB_NAME = "CASAVOSTRA";
+
+
 // Allow configuring the frontend origin explicitly for Render/Vercel
-const FRONTEND_ORIGIN =
+
+const FRONTEND_ORIGIN = "https://casavostra-frontend.vercel.app";
   process.env.FRONTEND_VERCEL_URL ||
   process.env.CLIENT_ORIGIN ||
   "*";
