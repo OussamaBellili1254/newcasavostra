@@ -15,10 +15,11 @@ const DB_NAME = "CASAVOSTRA";
 
 // Allow configuring the frontend origin explicitly for Render/Vercel
 
-const FRONTEND_ORIGIN = "https://casavostra-frontend.vercel.app";
-  process.env.FRONTEND_VERCEL_URL ||
-  process.env.CLIENT_ORIGIN ||
-  "*";
+const FRONTEND_ORIGIN =
+  process.env.FRONTEND_VERCEL_URL || // si défini dans Render
+  process.env.CLIENT_ORIGIN ||       // autre variable possible
+  "https://casavostra-frontend.vercel.app"; // valeur par défaut
+
 
 // Middlewares
 app.use(

@@ -19,9 +19,9 @@ const Header = () => {
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex-shrink-0 flex items-center">
-            <img
-              src={logo}
-              alt="Casavostra - Plus qu'une agence, un partenaire"
+            <img 
+              src={logo} 
+              alt="Casavostra - Plus qu'une agence, un partenaire" 
               className="h-14 md:h-16 lg:h-20 w-auto object-contain"
             />
           </Link>
@@ -38,13 +38,13 @@ const Header = () => {
                   {link.name}
                 </Link>
               ) : (
-                <a
-                  key={link.name}
-                  href={link.href}
-                  className="nav-link text-sm uppercase tracking-wide"
-                >
-                  {link.name}
-                </a>
+              <a
+                key={link.name}
+                href={link.href}
+                className="nav-link text-sm uppercase tracking-wide"
+              >
+                {link.name}
+              </a>
               ),
             )}
           </nav>
@@ -74,14 +74,14 @@ const Header = () => {
                     {link.name}
                   </Link>
                 ) : (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="nav-link text-sm uppercase tracking-wide py-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {link.name}
-                  </a>
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="nav-link text-sm uppercase tracking-wide py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {link.name}
+                </a>
                 ),
               )}
             </div>

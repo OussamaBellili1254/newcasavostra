@@ -3,6 +3,7 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useCallback,
   useState,
   type ReactNode,
 } from "react";
@@ -11,7 +12,7 @@ import {
   properties as initialProperties,
   type PropertyDetails,
 } from "@/data/properties";
-import { API_URL } from "@/config/api";
+import { API_URL } from "@/config";
 
 type TransactionType = "" | "vente" | "location";
 
@@ -48,7 +49,7 @@ export const PropertiesProvider = ({ children }: { children: ReactNode }) => {
         const json = await res.json();
         if (Array.isArray(json.data)) {
           const mapped: PropertyDetails[] = json.data.map(
-            (p: any, index: number) => ({
+            (p: Record<string, unknown>, index: number) => ({
               id: index + 1,
               backendId: p._id,
               title: p.title ?? "",
@@ -84,34 +85,39 @@ export const PropertiesProvider = ({ children }: { children: ReactNode }) => {
     fetchProperties();
   }, []);
 
-  const getPropertyById = (id: number) =>
-    properties.find((property) => property.id === id);
+  const getPropertyById = useCallback(
+    (id: number) => properties.find((property) => property.id === id),
+    [properties],
+  );
 
-  const filterProperties = (
-    city: string,
-    transaction: TransactionType,
-    category: string,
-  ) => {
-    const normalizedCity = city.trim().toLowerCase();
-    const normalizedTransaction = transaction.trim() as TransactionType;
-    const normalizedCategory = category.trim();
+  const filterProperties = useCallback(
+    (
+      city: string,
+      transaction: TransactionType,
+      category: string,
+    ) => {
+      const normalizedCity = city.trim().toLowerCase();
+      const normalizedTransaction = transaction.trim() as TransactionType;
+      const normalizedCategory = category.trim();
 
-    return properties.filter((p) => {
-      const cityOk =
-        normalizedCity === "" ||
-        (p.city && p.city.toLowerCase().includes(normalizedCity));
+      return properties.filter((p) => {
+        const cityOk =
+          normalizedCity === "" ||
+          (p.city && p.city.toLowerCase().includes(normalizedCity));
 
-      const transactionOk =
-        normalizedTransaction === "" || p.type === normalizedTransaction;
+        const transactionOk =
+          normalizedTransaction === "" || p.type === normalizedTransaction;
 
-      const categoryOk =
-        normalizedCategory === "" || p.category === normalizedCategory;
+        const categoryOk =
+          normalizedCategory === "" || p.category === normalizedCategory;
 
-      return cityOk && transactionOk && categoryOk;
-    });
-  };
+        return cityOk && transactionOk && categoryOk;
+      });
+    },
+    [properties],
+  );
 
-  const addProperty = async (property: Omit<PropertyDetails, "id">) => {
+  const addProperty = useCallback(async (property: Omit<PropertyDetails, "id">) => {
     const images =
       property.gallery && property.gallery.length > 0
         ? property.gallery
@@ -171,9 +177,9 @@ export const PropertiesProvider = ({ children }: { children: ReactNode }) => {
 
     setProperties((prev) => [...prev, newProperty]);
     return newProperty;
-  };
+  }, [properties]);
 
-  const updateProperty = async (
+  const updateProperty = useCallback(async (
     id: number,
     updates: Partial<PropertyDetails>,
   ) => {
@@ -213,9 +219,9 @@ export const PropertiesProvider = ({ children }: { children: ReactNode }) => {
     setProperties((prev) =>
       prev.map((p) => (p.id === id ? { ...p, ...updates } : p)),
     );
-  };
+  }, [properties]);
 
-  const deleteProperty = async (id: number) => {
+  const deleteProperty = useCallback(async (id: number) => {
     const existing = properties.find((p) => p.id === id);
     if (existing?.backendId) {
       await fetch(`${API_URL}/properties/${existing.backendId}`, {
@@ -224,7 +230,7 @@ export const PropertiesProvider = ({ children }: { children: ReactNode }) => {
     }
 
     setProperties((prev) => prev.filter((p) => p.id !== id));
-  };
+  }, [properties]);
 
   const value: PropertiesContextValue = useMemo(
     () => ({
@@ -235,7 +241,7 @@ export const PropertiesProvider = ({ children }: { children: ReactNode }) => {
       updateProperty,
       deleteProperty,
     }),
-    [properties],
+    [properties, getPropertyById, filterProperties, addProperty, updateProperty, deleteProperty],
   );
 
   return (
@@ -245,6 +251,7 @@ export const PropertiesProvider = ({ children }: { children: ReactNode }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useProperties = () => {
   const ctx = useContext(PropertiesContext);
   if (!ctx) {
