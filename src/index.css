@@ -1,0 +1,217 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "MaPolicePerso";
+  src: url("/fonts/mypolice.woff") format("woff"),
+       url("/fonts/mypolice.otf") format("opentype");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+button,
+input,
+textarea,
+select {
+  font-family: "MaPolicePerso", sans-serif;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 220 30% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 30% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 30% 15%;
+
+    --primary: 220 30% 15%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 40 30% 96%;
+    --secondary-foreground: 220 30% 15%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 10% 45%;
+
+    --accent: 35 90% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 14% 90%;
+    --input: 220 14% 90%;
+    --ring: 35 90% 55%;
+
+    --radius: 0.75rem;
+
+    /* Custom tokens */
+    --navy: 220 30% 15%;
+    --navy-light: 220 20% 25%;
+    --gold: 35 90% 55%;
+    --gold-light: 40 85% 65%;
+    --gold-dark: 30 90% 45%;
+    --cream: 40 30% 96%;
+    --warm-gray: 30 10% 60%;
+
+    /* Shadows */
+    --shadow-sm: 0 2px 8px -2px hsl(220 30% 15% / 0.08);
+    --shadow-md: 0 8px 24px -4px hsl(220 30% 15% / 0.12);
+    --shadow-lg: 0 16px 48px -8px hsl(220 30% 15% / 0.15);
+    --shadow-card: 0 4px 20px -4px hsl(220 30% 15% / 0.1);
+    --shadow-card-hover: 0 12px 32px -8px hsl(220 30% 15% / 0.18);
+
+    /* Typography */
+    --font-custom: "MaPolicePerso", sans-serif;
+    --font-display: var(--font-custom);
+    --font-body: var(--font-custom);
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 30% 8%;
+    --foreground: 0 0% 95%;
+
+    --card: 220 25% 12%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 220 25% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 0 0% 95%;
+    --primary-foreground: 220 30% 15%;
+
+    --secondary: 220 20% 18%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 220 20% 18%;
+    --muted-foreground: 220 10% 65%;
+
+    --accent: 35 90% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 20% 20%;
+    --input: 220 20% 20%;
+    --ring: 35 90% 55%;
+    
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-body);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display;
+    font-family: var(--font-display);
+  }
+}
+
+@layer components {
+  .nav-link {
+    @apply relative text-foreground/80 font-medium transition-colors duration-200 hover:text-foreground;
+  }
+  
+  .nav-link::after {
+    @apply content-[''] absolute -bottom-1 left-0 w-0 h-0.5 bg-accent transition-all duration-300;
+  }
+  
+  .nav-link:hover::after {
+    @apply w-full;
+  }
+
+  .filter-btn {
+    @apply px-6 py-2.5 rounded-full font-medium transition-all duration-300 border-2;
+  }
+
+  .filter-btn-active {
+    @apply bg-primary text-primary-foreground border-primary;
+  }
+
+  .filter-btn-inactive {
+    @apply bg-transparent text-foreground border-border hover:border-primary/50 hover:bg-muted;
+  }
+
+  .property-card {
+    @apply bg-card rounded-2xl overflow-hidden transition-all duration-300;
+    box-shadow: var(--shadow-card);
+  }
+
+  .property-card:hover {
+    @apply -translate-y-1;
+    box-shadow: var(--shadow-card-hover);
+  }
+
+  .search-input {
+    @apply w-full px-4 py-3 bg-background border border-border rounded-xl text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-accent/50 focus:border-accent transition-all duration-200;
+  }
+
+  .btn-primary {
+    @apply px-6 py-3 bg-accent text-accent-foreground font-semibold rounded-xl transition-all duration-300 hover:bg-gold-dark hover:shadow-lg active:scale-[0.98];
+  }
+
+  .btn-outline {
+    @apply px-5 py-2.5 border-2 border-primary text-primary font-medium rounded-xl transition-all duration-300 hover:bg-primary hover:text-primary-foreground;
+  }
+
+  .section-title {
+    @apply font-display text-3xl md:text-4xl font-semibold text-foreground;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .no-save-image {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
