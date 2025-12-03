@@ -9,14 +9,19 @@ import propertyRoutes from "./routes/propertyRoutes.js";
 const app = express();
 
 // Basic config
-const PORT = process.env.PORT || 5000;
-const MONGODB_URI = process.env.MONGODB_URI || "";
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || "*";
+const port = process.env.PORT || 5000;
+const MONGO_URL = process.env.MONGO_URL || process.env.MONGODB_URI || "";
+const DB_NAME = process.env.DB_NAME || "CASAVOSTRA";
+// Allow configuring the frontend origin explicitly for Render/Vercel
+const FRONTEND_ORIGIN =
+  process.env.FRONTEND_VERCEL_URL ||
+  process.env.CLIENT_ORIGIN ||
+  "*";
 
 // Middlewares
 app.use(
   cors({
-    origin: CLIENT_ORIGIN,
+    origin: FRONTEND_ORIGIN,
     credentials: false,
   }),
 );
@@ -47,15 +52,17 @@ app.use((err, req, res, next) => {
 // DB connection + server start
 const start = async () => {
   try {
-    if (!MONGODB_URI) {
-      throw new Error("MONGODB_URI manquant dans les variables d'environnement.");
+    if (!MONGO_URL) {
+      throw new Error("MONGO_URL manquant dans les variables d'environnement.");
     }
 
-    await mongoose.connect(MONGODB_URI);
-    console.log("✅ Connecté à MongoDB Atlas");
+    await mongoose.connect(MONGO_URL, {
+      dbName: DB_NAME,
+    });
+    console.log("✅ Connecté à MongoDB Atlas (base:", DB_NAME, ")");
 
-    app.listen(PORT, () => {
-      console.log(`🚀 Backend CASAVOSTRA démarré sur le port ${PORT}`);
+    app.listen(port, () => {
+      console.log(`🚀 Backend CASAVOSTRA démarré sur le port ${port}`);
     });
   } catch (error) {
     console.error("❌ Erreur lors du démarrage du serveur :", error.message);

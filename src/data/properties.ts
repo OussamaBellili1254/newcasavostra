@@ -11,6 +11,10 @@ import galleryTerrace from "@/assets/gallery-terrace.jpg";
 
 export interface PropertyDetails {
   id: number;
+  /**
+   * Optional backend identifier (e.g. MongoDB ObjectId) used for API calls.
+   */
+  backendId?: string;
   title: string;
   price: string;
   category: string;
