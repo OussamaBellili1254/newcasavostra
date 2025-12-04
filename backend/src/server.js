@@ -11,7 +11,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const MONGO_URL =
   "mongodb+srv://casavostra:CASAVOSTRA2025TOUTOU@casavostra.f7qmkyf.mongodb.net/?appName=casavostra";
-const DB_NAME = "CASAVOSTRA";
+const DB_NAME = "casavostra";
 
 // AUTHORIZED FRONTEND URLs
 const allowedOrigins = [
