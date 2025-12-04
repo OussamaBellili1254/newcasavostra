@@ -9,34 +9,27 @@ const app = express();
 
 // Basic config
 const port = process.env.PORT || 5000;
-const MONGO_URL = "mongodb+srv://casavostra:CASAVOSTRA2025TOUTOU@casavostra.f7qmkyf.mongodb.net/?appName=casavostra";
+const MONGO_URL =
+  "mongodb+srv://casavostra:CASAVOSTRA2025TOUTOU@casavostra.f7qmkyf.mongodb.net/?appName=casavostra";
 const DB_NAME = "CASAVOSTRA";
 
+// AUTHORIZED FRONTEND URLs
+const allowedOrigins = [
+  "http://localhost:8080",
+  "https://newcasavostra-1kxkm5jzn-oussama-bellilis-projects.vercel.app",
+  "https://newcasavostra.vercel.app"
+];
 
-// Allow configuring the frontend origin explicitly for Render/Vercel
-
-const FRONTEND_ORIGIN =
-  process.env.FRONTEND_VERCEL_URL || // si défini dans Render
-  process.env.CLIENT_ORIGIN ||       // autre variable possible
-  "https://casavostra-frontend.vercel.app"; // valeur par défaut
-
-
-// Middlewares
+// CORS
 app.use(
   cors({
-    origin: [
-      "http://localhost:8080",
-    "http://localhost:3000",
-    "https://casavostra-frontend.vercel.app",
-    "https://new-casavostra.vercel.app"
-  
-    ],
-    credentials: true,
-  }),
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
 );
 
 app.options("*", cors());
-
 
 app.use(express.json());
 
@@ -64,14 +57,10 @@ app.use((err, req, res, next) => {
 // DB connection + server start
 const start = async () => {
   try {
-    if (!MONGO_URL) {
-      throw new Error("MONGO_URL manquant dans les variables d'environnement.");
-    }
-
     await mongoose.connect(MONGO_URL, {
       dbName: DB_NAME,
     });
-    console.log("✅ Connecté à MongoDB Atlas (base:", DB_NAME, ")");
+    console.log("✅ Connecté à MongoDB Atlas");
 
     app.listen(port, () => {
       console.log(`🚀 Backend CASAVOSTRA démarré sur le port ${port}`);
@@ -83,5 +72,3 @@ const start = async () => {
 };
 
 start();
-
-
