@@ -27,7 +27,9 @@ app.use(
     origin: [
       "http://localhost:8080",
     "http://localhost:3000",
-    "https://casavostra-frontend.vercel.app"
+    "https://casavostra-frontend.vercel.app",
+    "https://new-casavostra.vercel.app"
+  
     ],
     credentials: true,
   }),
