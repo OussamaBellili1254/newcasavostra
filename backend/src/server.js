@@ -24,10 +24,18 @@ const FRONTEND_ORIGIN =
 // Middlewares
 app.use(
   cors({
-    origin: FRONTEND_ORIGIN,
-    credentials: false,
+    origin: [
+      "http://localhost:8080",
+    "http://localhost:3000",
+    "https://casavostra-frontend.vercel.app"
+    ],
+    credentials: true,
   }),
 );
+
+app.options("*", cors());
+
+
 app.use(express.json());
 
 if (process.env.NODE_ENV !== "production") {
@@ -43,7 +51,6 @@ app.get("/api/health", (req, res) => {
 app.use("/api/properties", propertyRoutes);
 
 // Error handler
-// eslint-disable-next-line no-unused-vars
 app.use((err, req, res, next) => {
   console.error(err);
   if (res.headersSent) return;
